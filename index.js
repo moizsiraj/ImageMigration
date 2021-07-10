@@ -34,46 +34,43 @@ app.get('/getShoes', async (req, res) => {
         let img_link = element.cover_image;
         let img_name = element.cover_image.split('/')[5];
         // console.log(downloaded.indexOf(img_name));
-        if (downloaded.indexOf(img_name) !== -1) {
-          console.log('exists');
-        }
-        // if (downloaded.indexOf(toString(element.shoe_id)) === -1) {
 
-        //   let exist = await urlExist(img_link);
-        //   const pathOne = `./downloads/${img_name}`;
-        //   fs.access(pathOne, fs.F_OK, (err) => {
-        //     if (err) {
-        //       console.error(err);
-        //       return;
-        //     }
-        //     //exist
-        //     try {
-        //       fs.unlinkSync(pathOne);
-        //       //file removed
-        //     } catch (err) {
-        //       console.error(err);
-        //     }
-        //   });
-        //   if (exist) {
-        //     shoes.push({
-        //       shoe_id: id,
-        //       img: img_name,
-        //       link: img_link,
-        //     });
-        //     const dl = new DownloaderHelper(`${img_link}`, `./downloads`, {
-        //       retry: { maxRetries: 3, delay: 1000 }, // { maxRetries: number, delay: number in ms } or false to disable (default)
-        //       // forceResume: false, // If the server does not return the "accept-ranges" header, can be force if it does support it
-        //       fileName: `${img_name}`,
-        //       removeOnStop: true, // remove the file when is stopped (default:true)
-        //       removeOnFail: true,
-        //     });
-        //     dl.on('end', () => {
-        //       fs.appendFileSync('./downloaded.txt', `${img_name}\n`);
-        //       console.log('Download Completed');
-        //     });
-        //     dl.start();
-        //   }
-        // }
+        if (downloaded.indexOf(img_name) === -1) {
+          let exist = await urlExist(img_link);
+          const pathOne = `./downloads/${img_name}`;
+          fs.access(pathOne, fs.F_OK, (err) => {
+            if (err) {
+              // console.error(err);
+              return;
+            }
+            //exist
+            try {
+              fs.unlinkSync(pathOne);
+              //file removed
+            } catch (err) {
+              // console.error(err);
+            }
+          });
+          if (exist) {
+            shoes.push({
+              shoe_id: id,
+              img: img_name,
+              link: img_link,
+            });
+            const dl = new DownloaderHelper(`${img_link}`, `./downloads`, {
+              retry: { maxRetries: 3, delay: 1000 }, // { maxRetries: number, delay: number in ms } or false to disable (default)
+              // forceResume: false, // If the server does not return the "accept-ranges" header, can be force if it does support it
+              fileName: `${img_name}`,
+              removeOnStop: true, // remove the file when is stopped (default:true)
+              removeOnFail: true,
+            });
+            dl.on('end', () => {
+              fs.appendFileSync('./downloaded.txt', `${img_name}\n`);
+              console.log('Download Completed');
+            });
+            dl.start();
+          }
+        }
       });
     })
     .catch(function (error) {
