@@ -1,0 +1,18 @@
+{
+  "name": "thriller_image_migrator",
+  "version": "1.0.0",
+  "description": "image migration to GCloud",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "express": "^4.17.1",
+    "node-downloader-helper": "^1.0.18",
+    "url-exist": "^3.0.0"
+  }
+}
